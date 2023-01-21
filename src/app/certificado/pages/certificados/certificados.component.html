@@ -1,0 +1,88 @@
+<div>
+  <div class="tools-bar">
+    <button mat-raised-button color="primary" (click)="goToCertificado()">
+      <i class="fa-solid fa-plus"></i>Agregar Denucia
+    </button>
+    <mat-form-field appearance="outline">
+      <mat-label>Filter</mat-label>
+      <input
+        matInput
+        (keyup)="applyFilter($event)"
+        placeholder="Ex. Spearks"
+        #input
+      />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>NO.</th>
+        <td mat-cell *matCellDef="let item; let i = index">
+          {{ paginatorRef.pageIndex * paginatorRef.pageSize + (i + 1) }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef>Nombres</th>
+        <td mat-cell *matCellDef="let element">
+          <a>{{ element.nombres }}</a>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="apellido">
+        <th mat-header-cell *matHeaderCellDef>Apellidos</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.apellidos }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="cedula">
+        <th mat-header-cell *matHeaderCellDef>Cedula</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.cedula }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fechaOficio">
+        <th mat-header-cell *matHeaderCellDef>Fecha de Oficio</th>
+        <td mat-cell *matCellDef="let element">{{ element.fechaOficio }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="tools">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <button
+            mat-icon-button
+            [matMenuTriggerFor]="toolsMenu"
+            aria-label="Example icon-button with a menu"
+          >
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #toolsMenu="matMenu" xPosition="before">
+            <button mat-menu-item>
+              <mat-icon>edit</mat-icon>
+              <span>Edit</span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>delete</mat-icon>
+              <span>Delete</span>
+            </button>
+          </mat-menu>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="4">No data matching the filter</td>
+      </tr>
+    </table>
+
+    <mat-paginator
+      #paginatorRef
+      [pageSizeOptions]="[5, 10, 25, 100]"
+    ></mat-paginator>
+  </div>
+</div>

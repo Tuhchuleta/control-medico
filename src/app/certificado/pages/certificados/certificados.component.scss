@@ -1,0 +1,67 @@
+.tools-bar {
+  button {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    height: 52px;
+    float: right;
+  }
+
+  mat-form-field {
+    font-size: 100%;
+  }
+}
+
+th.mat-header-cell {
+  text-align: center;
+}
+
+a:link {
+  text-decoration: none;
+  color: black;
+}
+
+a:visited {
+  text-decoration: none;
+  color: black;
+}
+
+a:hover {
+  color: grey;
+}
+
+a:active {
+  color: grey;
+}
+
+table {
+  width: 100%;
+  text-align: center;
+
+  .mat-column-num {
+    width: 3%;
+  }
+
+  .mat-column-description {
+    width: 35%;
+  }
+
+  .mat-column-type {
+    width: 15%;
+  }
+
+  .mat-column-brand {
+    width: 10%;
+  }
+
+  .mat-column-category {
+    width: 10%;
+  }
+
+  .mat-column-type {
+    width: 10%;
+  }
+
+  .mat-column-Tools {
+    width: 17%;
+  }
+}

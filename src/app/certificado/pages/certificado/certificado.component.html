@@ -1,0 +1,292 @@
+<form [formGroup]="certificadoFormGroup">
+  <div class="row">
+    <div class="col-6">
+      <div class="row">
+        <div class="col-12">
+          <h2>INFORMACION DEL PACIENTE</h2>
+          <hr />
+
+          <mat-form-field appearance="outline">
+            <mat-label>Nombres</mat-label>
+            <input matInput cdkFocusInitial formControlName="nombres" />
+            <mat-error *ngFor="let error of errorMessages">
+              <mat-error
+                *ngIf="
+                  nombres?.hasError(error.type) &&
+                  (nombres?.dirty || nombres?.touched)
+                "
+                >{{ error.message }}</mat-error
+              >
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Apellidos</mat-label>
+            <input matInput formControlName="apellidos" />
+            <mat-error *ngFor="let error of errorMessages">
+              <mat-error
+                *ngIf="
+                  apellidos?.hasError(error.type) &&
+                  (apellidos?.dirty || apellidos?.touched)
+                "
+                >{{ error.message }}</mat-error
+              >
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Cedula</mat-label>
+            <input matInput formControlName="cedula" />
+            <mat-error *ngFor="let error of errorMessages">
+              <mat-error
+                *ngIf="
+                  cedula?.hasError(error.type) &&
+                  (cedula?.dirty || cedula?.touched)
+                "
+                >{{ error.message }}</mat-error
+              >
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Fecha de Nacimineto</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker1"
+              formControlName="fechaNacimiento"
+            />
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="picker1"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+            <mat-error *ngFor="let error of errorMessages">
+              <mat-error
+                *ngIf="
+                  fechaNacimiento?.hasError(error.type) &&
+                  (fechaNacimiento?.dirty || fechaNacimiento?.touched)
+                "
+                >{{ error.message }}</mat-error
+              >
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="row">
+        <div class="col-12">
+          <h2>RESIDENCIA</h2>
+          <hr />
+
+          <ng-container formGroupName="residencia">
+            <mat-form-field appearance="outline">
+              <mat-label>Direccion</mat-label>
+              <input matInput formControlName="direccion" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Sector</mat-label>
+              <input matInput formControlName="sector" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Provincia</mat-label>
+              <mat-select formControlName="provincia">
+                <mat-option
+                  *ngFor="let provincia of provincias"
+                  [value]="provincia.id"
+                >
+                  {{ provincia.provincia }} ( {{ provincia.ciudad }} )
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Codigo Postal</mat-label>
+              <input formControlName="codigoPostal" type="number" matInput />
+            </mat-form-field>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6">
+      <mat-radio-group formControlName="sexo" aria-label="Select an option">
+        <mat-radio-button value="M">Masculino</mat-radio-button>
+        <mat-radio-button value="F">Femenino</mat-radio-button>
+      </mat-radio-group>
+
+      <div class="row my-3">
+        <div class="col-6">
+          <div class="section-image text-center">
+            <img
+              type="file"
+              [src]="image1Selected || 'assets/images/no-image.png'"
+              alt="Banner Image"
+            />
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="photoInput1.click()"
+            >
+              Choose
+            </button>
+
+            <div class="choose">
+              <input
+                type="file"
+                (change)="onimage1Selected($event)"
+                #photoInput1
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="section-image text-center">
+            <img
+              type="file"
+              [src]="image2Selected || 'assets/images/no-image.png'"
+              alt="Banner Image"
+            />
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="photoInput2.click()"
+            >
+              Choose
+            </button>
+
+            <div class="choose">
+              <input
+                type="file"
+                (change)="onimage2Selected($event)"
+                #photoInput2
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6">
+      <h2>Contatos</h2>
+      <hr />
+
+      <ng-container formGroupName="contactos">
+        <mat-form-field appearance="outline">
+          <mat-label>Telefono</mat-label>
+          <input matInput formControlName="telefono" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" />
+        </mat-form-field>
+      </ng-container>
+    </div>
+
+    <div class="col-12">
+      <h2>CERTIFICACION</h2>
+      <hr />
+
+      <div class="row">
+        <div class="col-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Oficio No.</mat-label>
+            <input matInput formControlName="numeroOficio" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Fecha de Oficio</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker2"
+              formControlName="fechaOficio"
+            />
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="picker2"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Aspecto Legal</mat-label>
+            <select matNativeControl formControlName="aspectoLegal">
+              <option
+                *ngFor="let item of aspectoLegal$ | async"
+                [value]="item.name"
+              >
+                {{ item.name }}
+              </option>
+            </select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Jur. Medica</mat-label>
+            <select matNativeControl formControlName="jurMedica">
+              <option
+                *ngFor="let item of jurMedica$ | async"
+                [value]="item.name"
+              >
+                {{ item.name }}
+              </option>
+            </select>
+          </mat-form-field>
+        </div>
+        <div class="col-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Examen Fisico</mat-label>
+            <textarea
+              matInput
+              cdkTextareaAutosize
+              cdkAutosizeMinRows="1"
+              cdkAutosizeMaxRows="4.5"
+              formControlName="examenFisico"
+            ></textarea>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Conclusion</mat-label>
+            <select matNativeControl formControlName="conclusion">
+              <option
+                *ngFor="let item of conclusion$ | async"
+                [value]="item.name"
+              >
+                {{ item.name }}
+              </option>
+            </select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Referido por</mat-label>
+            <select matNativeControl formControlName="referido">
+              <option
+                *ngFor="let item of referido$ | async"
+                [value]="item.name"
+              >
+                {{ item.name }}
+              </option>
+            </select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>En Estado</mat-label>
+            <select matNativeControl formControlName="estado">
+              <option value="Ambulatorio">Ambulatorio</option>
+              <option value="Hospitalización">Hospitalización</option>
+            </select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div class="action">
+  <button type="button" mat-raised-button color="warn">Cancel</button>
+
+  <button type="button" mat-raised-button color="success" (click)="create()">
+    CREATE
+  </button>
+</div>
