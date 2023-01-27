@@ -36,7 +36,7 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Cedula</mat-label>
-            <input matInput formControlName="cedula" />
+            <input matInput mask="000-0000000-0" formControlName="cedula" />
             <mat-error *ngFor="let error of errorMessages">
               <mat-error
                 *ngIf="
@@ -192,25 +192,6 @@
       <div class="row">
         <div class="col-6">
           <mat-form-field appearance="outline">
-            <mat-label>Oficio No.</mat-label>
-            <input matInput formControlName="numeroOficio" />
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>Fecha de Oficio</mat-label>
-            <input
-              matInput
-              [matDatepicker]="picker2"
-              formControlName="fechaOficio"
-            />
-            <mat-datepicker-toggle
-              matIconSuffix
-              [for]="picker2"
-            ></mat-datepicker-toggle>
-            <mat-datepicker #picker2></mat-datepicker>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline">
             <mat-label>Aspecto Legal</mat-label>
             <select matNativeControl formControlName="aspectoLegal">
               <option
@@ -231,6 +212,14 @@
               >
                 {{ item.name }}
               </option>
+            </select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>En Estado</mat-label>
+            <select matNativeControl formControlName="estado">
+              <option value="Ambulatorio">Ambulatorio</option>
+              <option value="Hospitalización">Hospitalización</option>
             </select>
           </mat-form-field>
         </div>
@@ -269,14 +258,6 @@
               </option>
             </select>
           </mat-form-field>
-
-          <mat-form-field appearance="outline">
-            <mat-label>En Estado</mat-label>
-            <select matNativeControl formControlName="estado">
-              <option value="Ambulatorio">Ambulatorio</option>
-              <option value="Hospitalización">Hospitalización</option>
-            </select>
-          </mat-form-field>
         </div>
       </div>
     </div>
@@ -284,9 +265,11 @@
 </form>
 
 <div class="action">
-  <button type="button" mat-raised-button color="warn">Cancel</button>
+  <button class="incr" id="incr" type="button" mat-raised-button color="warn">
+    Cancel
+  </button>
 
   <button type="button" mat-raised-button color="success" (click)="create()">
-    CREATE
+    Generar PDF
   </button>
 </div>

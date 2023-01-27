@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { InitMaterialModule } from './shared/modules';
 import { RouterModule } from '@angular/router';
 import { LoginModule } from './login/login.module';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,8 +26,10 @@ import { LoginModule } from './login/login.module';
     HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
       dataEncapsulation: false,
     }),
+    NgxMaskDirective,
+    NgxMaskPipe,
   ],
-  providers: [],
+  providers: [provideNgxMask()],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

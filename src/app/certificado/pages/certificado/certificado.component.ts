@@ -3,7 +3,6 @@ import { CertificadoService } from '../../services/certificado.service';
 import { FormValidator, Provincias } from '../../../shared/constants';
 import { PdfService } from '../../../shared/services/pdf.service';
 import {
-  UntypedFormArray,
   UntypedFormBuilder,
   UntypedFormGroup,
   Validators,
@@ -45,6 +44,8 @@ export class CertificadoComponent implements OnInit {
     //     }
     //   );
     // }
+    console.log(this.certificadoFormGroup);
+
     this.pdfService.createPdf(this.certificadoFormGroup.getRawValue());
   }
 
@@ -74,7 +75,7 @@ export class CertificadoComponent implements OnInit {
     this.certificadoFormGroup = this.formBuilder.group({
       nombres: ['', Validators.required],
       apellidos: ['', Validators.required],
-      cedula: ['', Validators.required],
+      cedula: [''],
       fechaNacimiento: ['', Validators.required],
       sexo: ['M', Validators.required],
       residencia: this.formBuilder.group({
@@ -91,8 +92,6 @@ export class CertificadoComponent implements OnInit {
         path1: [''],
         path2: [''],
       }),
-      numeroOficio: ['', Validators.required],
-      fechaOficio: ['', Validators.required],
       aspectoLegal: ['', Validators.required],
       jurMedica: ['', Validators.required],
       examenFisico: ['', Validators.required],
@@ -132,14 +131,6 @@ export class CertificadoComponent implements OnInit {
 
   get images() {
     return this.certificadoFormGroup.get('images');
-  }
-
-  get numeroOficio() {
-    return this.certificadoFormGroup.get('numeroOficio');
-  }
-
-  get fechaOficio() {
-    return this.certificadoFormGroup.get('fechaOficio');
   }
 
   get aspectoLegal() {

@@ -6,6 +6,7 @@ import { CertificadosComponent } from './pages/certificados/certificados.compone
 import { CertificadoComponent } from './pages/certificado/certificado.component';
 import { InitMaterialModule } from '../shared/modules';
 import { HttpClientModule } from '@angular/common/http';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 
 @NgModule({
   declarations: [CertificadosComponent, CertificadoComponent],
@@ -14,6 +15,9 @@ import { HttpClientModule } from '@angular/common/http';
     CertificadoRoutingModule,
     HttpClientModule,
     InitMaterialModule,
+    NgxMaskDirective,
+    NgxMaskPipe,
   ],
+  providers: [provideNgxMask()],
 })
 export class CertificadoModule {}
