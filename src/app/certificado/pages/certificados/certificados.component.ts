@@ -43,6 +43,10 @@ export class CertificadosComponent implements OnInit {
     }
   }
 
+  print(): void {
+    console.log('print');
+  }
+
   goToCertificado(id?: string): void {
     id
       ? this.router.navigate(['/private/certificado/edit', id])
@@ -50,12 +54,10 @@ export class CertificadosComponent implements OnInit {
   }
 
   private getList(): void {
-    this.certificadoService.getList().subscribe({
-      next: (result) => {
-        this.dataSource = new MatTableDataSource(result);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      },
-    });
+    const result = this.certificadoService.getCertificados();
+    console.log(result);
+    this.dataSource = new MatTableDataSource(result);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 }

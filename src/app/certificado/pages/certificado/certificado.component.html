@@ -122,7 +122,10 @@
           <div class="section-image text-center">
             <img
               type="file"
-              [src]="image1Selected || 'assets/images/no-image.png'"
+              [src]="
+                images.get('agresion').value.path ||
+                'assets/images/no-image.png'
+              "
               alt="Banner Image"
             />
             <button
@@ -136,7 +139,7 @@
             <div class="choose">
               <input
                 type="file"
-                (change)="onimage1Selected($event)"
+                (change)="onImageAgrecionSelected($event)"
                 #photoInput1
               />
             </div>
@@ -146,7 +149,9 @@
           <div class="section-image text-center">
             <img
               type="file"
-              [src]="image2Selected || 'assets/images/no-image.png'"
+              [src]="
+                images.get('perfil').value.path || 'assets/images/no-image.png'
+              "
               alt="Banner Image"
             />
             <button
@@ -160,7 +165,7 @@
             <div class="choose">
               <input
                 type="file"
-                (change)="onimage2Selected($event)"
+                (change)="onImagePerfilSelected($event)"
                 #photoInput2
               />
             </div>
@@ -265,7 +270,14 @@
 </form>
 
 <div class="action">
-  <button class="incr" id="incr" type="button" mat-raised-button color="warn">
+  <button
+    class="incr"
+    id="incr"
+    type="button"
+    mat-raised-button
+    color="warn"
+    (click)="cancel()"
+  >
     Cancel
   </button>
 

@@ -1,13 +1,11 @@
-import { CdkAriaLive } from '@angular/cdk/a11y';
-import { FlexibleConnectedPositionStrategy } from '@angular/cdk/overlay';
 import { Injectable } from '@angular/core';
-import { RouterState, withDebugTracing } from '@angular/router';
 
-import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
-import { bufferToggle, from, map } from 'rxjs';
+import * as pdfMake from 'pdfmake/build/pdfmake';
 
 (<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
+
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root',
@@ -45,6 +43,7 @@ export class PdfService {
 
   createPdf(form: any): void {
     const user: any = JSON.parse(localStorage.getItem('user'));
+
     const certificadoPdf: any = {
       background: this.background(),
       content: [
@@ -133,13 +132,16 @@ export class PdfService {
                     margin: [10, 10],
                     width: 100,
                     height: 100,
-                    image: this.logoMisterioPublicoUrl,
+                    image:
+                      form?.images?.agresion?.path ||
+                      this.logoMisterioPublicoUrl,
                   },
                   {
                     margin: [10, 10],
                     width: 100,
                     height: 100,
-                    image: this.logoMisterioPublicoUrl,
+                    image:
+                      form?.images?.perfil?.path || this.logoMisterioPublicoUrl,
                   },
                 ],
 
@@ -173,10 +175,17 @@ export class PdfService {
               [
                 {
                   margin: [10, 10],
-                  decoration: 'underline',
-                  bold: true,
                   alignment: 'justify',
-                  text: `Conclusion: ${form.conclusion}(Las conclusiones estan sujetas a cualquier tipo de complicacion que se presente dentro de la evolucion del periodo de curacion establecido).`,
+                  text: [
+                    {
+                      decoration: 'underline',
+                      bold: true,
+                      text: `Conclusion: ${form.conclusion}`,
+                    },
+                    {
+                      text: '(Las conclusiones estan sujetas a cualquier tipo de complicacion que se presente dentro de la evolucion del periodo de curacion establecido).',
+                    },
+                  ],
                 },
               ],
             ],
@@ -193,7 +202,18 @@ export class PdfService {
         {
           margin: [5, 10, 10, 20],
           alignment: 'justify',
-          text: 'EXPEDIDO en la cuidad de Santo Domingo de Guzman, Distrito Nacional, capital de la Republica Dominicana de fecha _______________ a las _____horas.',
+          text: [
+            {
+              text: 'EXPEDIDO en la cuidad de Santo Domingo de Guzman, Distrito Nacional, capital de la Republica Dominicana de fecha ',
+            },
+            {
+              bold: true,
+              text: `${this.dateToText(form?.fechaOficio as Date)}`,
+            },
+            {
+              text: `${this.timeToText(form?.fechaOficio as Date)}`,
+            },
+          ],
         },
         {
           margin: [0, 30, 0, 0],
@@ -207,13 +227,41 @@ export class PdfService {
           text: 'Medico Legista Actuante',
         },
       ],
-
-      images: {
-        mySuperImage: 'data:image/jpeg;base64,...content...',
+      defaultStyle: {
+        font: 'gillSansMT',
       },
     };
 
-    pdfMake.createPdf(certificadoPdf).open();
+    const fonts = {
+      gillSansMT: {
+        normal: 'Gill-Sans-MT.ttf',
+        bold: 'Gill-Sans-MT.ttf',
+        italics: 'Gill-Sans-MT.ttf',
+        bolditalics: 'Gill-Sans-MT.ttf',
+      },
+    };
+
+    pdfMake.createPdf(certificadoPdf, null, fonts).open();
+  }
+
+  private dateToText(fechaOficio: Date): string {
+    const date = moment(fechaOficio).locale('es');
+    const dayText = date.format('dddd');
+    const day = date.format('DD');
+    const month = date.format('MMMM');
+    const year = date.format('yyyy');
+
+    return `${dayText} ${day} del mes de ${month} del año ${year} `;
+  }
+
+  private timeToText(fechaOficio: Date): string {
+    const date = moment(fechaOficio).locale('es');
+    const hour = date.format('hh');
+    const minutes = date.format('mm');
+    const seconds = date.format('ss');
+    const ampm = date.format('a');
+
+    return `a las ${hour}:${minutes}:${seconds} ${ampm} horas.`;
   }
 
   private getImageDataUrlFromLocalPath(localPath: string): Promise<string> {

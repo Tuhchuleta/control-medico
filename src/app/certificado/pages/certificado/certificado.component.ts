@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CertificadoService } from '../../services/certificado.service';
 import { FormValidator, Provincias } from '../../../shared/constants';
 import { PdfService } from '../../../shared/services/pdf.service';
+import { Router } from '@angular/router';
 import {
   UntypedFormBuilder,
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-certificado',
@@ -23,13 +25,11 @@ export class CertificadoComponent implements OnInit {
 
   provincias = Provincias;
 
-  image1Selected: string | ArrayBuffer = '';
-  image2Selected: string | ArrayBuffer = '';
-
   constructor(
     private certificadoService: CertificadoService,
     private formBuilder: UntypedFormBuilder,
-    private pdfService: PdfService
+    private pdfService: PdfService,
+    private router: Router
   ) {
     this.createForm();
   }
@@ -37,42 +37,64 @@ export class CertificadoComponent implements OnInit {
   ngOnInit(): void {}
 
   create(): void {
-    // if (this.certificadoFormGroup.invalid) {
-    //   return Object.values(this.certificadoFormGroup.controls).forEach(
-    //     (control) => {
-    //       control.markAllAsTouched();
-    //     }
-    //   );
-    // }
-    console.log(this.certificadoFormGroup);
+    if (this.certificadoFormGroup.invalid) {
+      return Object.values(this.certificadoFormGroup.controls).forEach(
+        (control) => {
+          control.markAllAsTouched();
+        }
+      );
+    }
 
-    this.pdfService.createPdf(this.certificadoFormGroup.getRawValue());
+    const certificados = localStorage.getItem('certificados');
+    this.id.setValue(certificados ? JSON.parse(certificados).length + 1 : 1);
+    this.certificadoService.createCertificado(this.certificadoFormGroup.value);
+
+    Swal.fire({
+      title: '¿Desea imprimir el certificado?',
+      showDenyButton: true,
+      denyButtonText: 'No Imprimir',
+      confirmButtonText: 'Imprimir',
+    }).then((result: any) => {
+      if (result.isConfirmed) {
+        this.pdfService.createPdf(this.certificadoFormGroup.getRawValue());
+      }
+      this.cancel();
+    });
   }
 
-  onimage1Selected(event: any): void {
-    if (event.target.files && event.target.files[0]) {
-      this.images.patchValue({
-        path1: event.target.files[0] as File,
-      });
-      const reader = new FileReader();
-      reader.onload = (e) => (this.image1Selected = reader.result || '');
-      reader.readAsDataURL(this.images.value.path1);
-    }
+  cancel(): void {
+    this.router.navigate(['private/certificado']);
   }
 
-  onimage2Selected(event: any): void {
-    if (event.target.files && event.target.files[0]) {
-      this.images.patchValue({
-        path2: event.target.files[0] as File,
+  onImageAgrecionSelected(event: any): void {
+    const file = event.target.files[0] as File;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.images.get('agresion').setValue({
+        path: reader.result,
+        file: file,
       });
-      const reader = new FileReader();
-      reader.onload = (e) => (this.image2Selected = reader.result || '');
-      reader.readAsDataURL(this.images.value.path2);
-    }
+    };
+    reader.readAsDataURL(file);
+  }
+
+  onImagePerfilSelected(event: any): void {
+    const file = event.target.files[0] as File;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.images.get('perfil').setValue({
+        path: reader.result,
+        file: file,
+      });
+    };
+    reader.readAsDataURL(file);
   }
 
   private createForm(): void {
     this.certificadoFormGroup = this.formBuilder.group({
+      id: [''],
       nombres: ['', Validators.required],
       apellidos: ['', Validators.required],
       cedula: [''],
@@ -89,10 +111,17 @@ export class CertificadoComponent implements OnInit {
         email: [''],
       }),
       images: this.formBuilder.group({
-        path1: [''],
-        path2: [''],
+        agresion: this.formBuilder.group({
+          path: [],
+          file: [''],
+        }),
+        perfil: this.formBuilder.group({
+          path: [],
+          file: [''],
+        }),
       }),
       aspectoLegal: ['', Validators.required],
+      fechaOficio: [new Date(Date.now())],
       jurMedica: ['', Validators.required],
       examenFisico: ['', Validators.required],
       conclusion: ['', Validators.required],
@@ -103,6 +132,10 @@ export class CertificadoComponent implements OnInit {
 
   get errorMessages() {
     return FormValidator;
+  }
+
+  get id() {
+    return this.certificadoFormGroup.get('id');
   }
 
   get nombres() {
@@ -147,6 +180,10 @@ export class CertificadoComponent implements OnInit {
 
   get examenFisico() {
     return this.certificadoFormGroup.get('examenFisico');
+  }
+
+  get fechaOficio() {
+    return this.certificadoFormGroup.get('fechaOficio');
   }
 
   get conclusion() {

@@ -6,6 +6,8 @@ import { map, Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class CertificadoService {
+  certificados: any[] = [];
+
   constructor(private http: HttpClient) {}
 
   getAspectoLegal(): Observable<any> {
@@ -26,5 +28,45 @@ export class CertificadoService {
 
   getList(): Observable<any> {
     return this.http.get<any>('api/List').pipe(map((result) => result));
+  }
+
+  getCertificados() {
+    if (!localStorage.getItem('certificados')) {
+      this.getList().subscribe({
+        next: (data) => {
+          this.certificados = data;
+          localStorage.setItem(
+            'certificados',
+            JSON.stringify(this.certificados)
+          );
+        },
+        error: (error) => console.log(error),
+      });
+
+      return this.certificados;
+    }
+
+    this.certificados = JSON.parse(
+      localStorage.getItem('certificados') as string
+    );
+
+    return this.certificados;
+  }
+
+  createCertificado(certificado: any) {
+    delete certificado.images.agresion.path;
+    delete certificado.images.perfil.path;
+
+    let certificados: any[] = [];
+
+    if (!localStorage.getItem('certificados')) {
+      certificados.push(certificado);
+      localStorage.setItem('certificados', JSON.stringify(certificados));
+      return;
+    }
+
+    certificados = JSON.parse(localStorage.getItem('certificados') as string);
+    certificados.push(certificado);
+    localStorage.setItem('certificados', JSON.stringify(certificados));
   }
 }

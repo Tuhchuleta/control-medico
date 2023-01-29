@@ -3,10 +3,11 @@ import { CommonModule } from '@angular/common';
 
 import { PrivateRoutingModule } from './private-routing.module';
 import { PrivateComponent } from './layout/private/private.component';
-import { InitMaterialModule } from '../shared/modules';
+
+import { ToolbarComponent } from '../shared/components';
 
 @NgModule({
   declarations: [PrivateComponent],
-  imports: [CommonModule, PrivateRoutingModule, InitMaterialModule],
+  imports: [CommonModule, PrivateRoutingModule, ToolbarComponent],
 })
 export class PrivateModule {}
