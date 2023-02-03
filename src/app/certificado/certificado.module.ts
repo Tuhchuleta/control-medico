@@ -7,9 +7,10 @@ import { CertificadoComponent } from './pages/certificado/certificado.component'
 import { InitMaterialModule } from '../shared/modules';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+import { FormatDocumentPipe } from './pipes/format-document.pipe';
 
 @NgModule({
-  declarations: [CertificadosComponent, CertificadoComponent],
+  declarations: [CertificadosComponent, CertificadoComponent, FormatDocumentPipe],
   imports: [
     CommonModule,
     CertificadoRoutingModule,

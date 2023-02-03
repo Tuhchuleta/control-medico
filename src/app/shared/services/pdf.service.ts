@@ -101,9 +101,9 @@ export class PdfService {
                     user.exequatur
                   }, CERTIFICO que, actuando a requerimiento ${
                     form.referido
-                  }, he practicado un exámen físico a ${form.nombres.toUpperCase()} ${form.apellidos.toUpperCase()}, cédula: ${
-                    form.cedula ? form.cedula : 'N/P'
-                  }, domiciliado en ${form.residencia.direccion} ${
+                  }, he practicado un exámen físico a ${form.nombres.toUpperCase()} ${form.apellidos.toUpperCase()}, cédula: ${this.formatDocument(
+                    form.documentoIdentidad
+                  )}, domiciliado en ${form.residencia.direccion} ${
                     form.residencia.sector
                   }, Edad 21 que actualmente se encuentra en estado ${
                     form.estado
@@ -242,6 +242,16 @@ export class PdfService {
     };
 
     pdfMake.createPdf(certificadoPdf, null, fonts).open();
+  }
+
+  private formatDocument(document: string): string {
+    if (!document) {
+      return 'N/P';
+    }
+
+    return document.length === 11
+      ? (document = document.replace(/(\d{3})(\d{7})(\d{1})/, '$1-$2-$3'))
+      : document.toUpperCase();
   }
 
   private dateToText(fechaOficio: Date): string {

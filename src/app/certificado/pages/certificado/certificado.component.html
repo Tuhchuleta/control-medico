@@ -8,7 +8,12 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Nombres</mat-label>
-            <input matInput cdkFocusInitial formControlName="nombres" />
+            <input
+              matInput
+              cdkFocusInitial
+              formControlName="nombres"
+              placeholder="Ex. Joe Due"
+            />
             <mat-error *ngFor="let error of errorMessages">
               <mat-error
                 *ngIf="
@@ -34,19 +39,66 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="outline">
-            <mat-label>Cedula</mat-label>
-            <input matInput mask="000-0000000-0" formControlName="cedula" />
-            <mat-error *ngFor="let error of errorMessages">
-              <mat-error
+          <div class="row">
+            <div class="col-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Cedula / Pasaporte</mat-label>
+                <mat-select formControlName="tipoDocumento">
+                  <mat-option value="cedula">Cedula</mat-option>
+                  <mat-option value="pasaporte">Pasaporte</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-8">
+              <div
                 *ngIf="
-                  cedula?.hasError(error.type) &&
-                  (cedula?.dirty || cedula?.touched)
+                  tipoDocumento.value === 'cedula';
+                  then cedula;
+                  else pasaporte
                 "
-                >{{ error.message }}</mat-error
+              ></div>
+              <ng-template #cedula>
+                <mat-form-field appearance="outline">
+                  <mat-label>Cedula</mat-label>
+                  <input
+                    matInput
+                    mask="000-0000000-0"
+                    formControlName="documentoIdentidad"
+                  />
+                  <mat-error *ngFor="let error of errorMessages">
+                    <mat-error
+                      *ngIf="
+                        documentoIdentidad?.hasError(error.type) &&
+                        (documentoIdentidad?.dirty ||
+                          documentoIdentidad?.touched)
+                      "
+                      >{{ error.message }}</mat-error
+                    >
+                  </mat-error>
+                </mat-form-field></ng-template
               >
-            </mat-error>
-          </mat-form-field>
+              <ng-template #pasaporte>
+                <mat-form-field appearance="outline">
+                  <mat-label>Pasaporte</mat-label>
+                  <input
+                    matInput
+                    formControlName="documentoIdentidad"
+                    mask="SS0000000|| SS00000000"
+                  />
+                  <mat-error *ngFor="let error of errorMessages">
+                    <mat-error
+                      *ngIf="
+                        documentoIdentidad?.hasError(error.type) &&
+                        (documentoIdentidad?.dirty ||
+                          documentoIdentidad?.touched)
+                      "
+                      >{{ error.message }}</mat-error
+                    >
+                  </mat-error>
+                </mat-form-field></ng-template
+              >
+            </div>
+          </div>
 
           <mat-form-field appearance="outline">
             <mat-label>Fecha de Nacimineto</mat-label>
@@ -54,6 +106,7 @@
               matInput
               [matDatepicker]="picker1"
               formControlName="fechaNacimiento"
+              placeholder="DD/MM/AAAA"
             />
             <mat-datepicker-toggle
               matIconSuffix
@@ -223,8 +276,9 @@
           <mat-form-field appearance="outline">
             <mat-label>En Estado</mat-label>
             <select matNativeControl formControlName="estado">
-              <option value="Ambulatorio">Ambulatorio</option>
-              <option value="Hospitalización">Hospitalización</option>
+              <option *ngFor="let item of estado$ | async" [value]="item.id">
+                {{ item.name }}
+              </option>
             </select>
           </mat-form-field>
         </div>

@@ -22,6 +22,7 @@ export class CertificadoComponent implements OnInit {
   conclusion$ = this.certificadoService.getConclusion();
   jurMedica$ = this.certificadoService.getJurMedica();
   referido$ = this.certificadoService.getReferido();
+  estado$ = this.certificadoService.getEstado();
 
   provincias = Provincias;
 
@@ -37,13 +38,13 @@ export class CertificadoComponent implements OnInit {
   ngOnInit(): void {}
 
   create(): void {
-    if (this.certificadoFormGroup.invalid) {
-      return Object.values(this.certificadoFormGroup.controls).forEach(
-        (control) => {
-          control.markAllAsTouched();
-        }
-      );
-    }
+    // if (this.certificadoFormGroup.invalid) {
+    //   return Object.values(this.certificadoFormGroup.controls).forEach(
+    //     (control) => {
+    //       control.markAllAsTouched();
+    //     }
+    //   );
+    // }
 
     const certificados = localStorage.getItem('certificados');
     this.id.setValue(certificados ? JSON.parse(certificados).length + 1 : 1);
@@ -97,7 +98,8 @@ export class CertificadoComponent implements OnInit {
       id: [''],
       nombres: ['', Validators.required],
       apellidos: ['', Validators.required],
-      cedula: [''],
+      tipoDocumento: ['cedula', Validators.required],
+      documentoIdentidad: [''],
       fechaNacimiento: ['', Validators.required],
       sexo: ['M', Validators.required],
       residencia: this.formBuilder.group({
@@ -146,7 +148,7 @@ export class CertificadoComponent implements OnInit {
     return this.certificadoFormGroup.get('apellidos');
   }
 
-  get cedula() {
+  get documentoIdentidad() {
     return this.certificadoFormGroup.get('cedula');
   }
 
@@ -196,5 +198,9 @@ export class CertificadoComponent implements OnInit {
 
   get estado() {
     return this.certificadoFormGroup.get('estado');
+  }
+
+  get tipoDocumento() {
+    return this.certificadoFormGroup.get('tipoDocumento');
   }
 }

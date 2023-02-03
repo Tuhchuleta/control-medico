@@ -37,6 +37,16 @@ export class InMemoryDataService {
       { id: 7, name: 'de la Comisión Investigadora' },
     ];
 
+    const Estado = [
+      { id: 1, name: 'de la Comandancia de la FF. AA.' },
+      { id: 2, name: 'de la Comandancia de la Fuerza Aerea Dom' },
+      { id: 3, name: 'de la Comandancia de la Marina de Guerra' },
+      { id: 4, name: 'de la Comandancia de la Policia Nacional' },
+      { id: 5, name: 'del Departamento de Homicidios de la PN ' },
+      { id: 6, name: 'del Juez de Instrucción' },
+      { id: 7, name: 'de la Comisión Investigadora' },
+    ];
+
     const Conclusion = [
       {
         id: 1,
@@ -59,7 +69,8 @@ export class InMemoryDataService {
         id: 1,
         nombres: 'Noely',
         apellidos: 'Pena Ramirez',
-        cedula: '001-1752469-4',
+        tipoDocumento: 'cedula',
+        documentoIdentidad: '00117524694',
         fechaNacimiento: '',
         sexo: 'f',
         residencia: {
@@ -91,7 +102,8 @@ export class InMemoryDataService {
         id: 2,
         nombres: 'Juan Carlos',
         apellidos: 'De la Cruz Ramos',
-        cedula: '402-2234576-5',
+        tipoDocumento: 'cedula',
+        documentoIdentidad: '40222345765',
         fechaNacimiento: '',
         sexo: 'm',
         residencia: {
@@ -121,6 +133,6 @@ export class InMemoryDataService {
       },
     ];
 
-    return { AspectoLegal, List, Conclusion, JurMedica, Referido };
+    return { AspectoLegal, List, Conclusion, JurMedica, Referido, Estado };
   }
 }

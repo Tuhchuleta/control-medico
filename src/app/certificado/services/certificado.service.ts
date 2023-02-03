@@ -26,6 +26,10 @@ export class CertificadoService {
     return this.http.get<any>('api/Referido').pipe(map((result) => result));
   }
 
+  getEstado(): Observable<any> {
+    return this.http.get<any>('api/Estado').pipe(map((result) => result));
+  }
+
   getList(): Observable<any> {
     return this.http.get<any>('api/List').pipe(map((result) => result));
   }

@@ -20,7 +20,7 @@ export class CertificadosComponent implements OnInit {
     'id',
     'nombre',
     'apellido',
-    'cedula',
+    'documentoIdentidad',
     'fechaOficio',
     'tools',
   ];
@@ -41,10 +41,6 @@ export class CertificadosComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
-  }
-
-  print(): void {
-    console.log('print');
   }
 
   goToCertificado(id?: string): void {
