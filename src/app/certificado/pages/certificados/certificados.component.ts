@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, AfterViewInit } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,7 +10,7 @@ import { CertificadoService } from '../../services/certificado.service';
   templateUrl: './certificados.component.html',
   styleUrls: ['./certificados.component.scss'],
 })
-export class CertificadosComponent implements OnInit {
+export class CertificadosComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -34,6 +34,11 @@ export class CertificadosComponent implements OnInit {
     this.getList();
   }
 
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -51,9 +56,6 @@ export class CertificadosComponent implements OnInit {
 
   private getList(): void {
     const result = this.certificadoService.getCertificados();
-    console.log(result);
     this.dataSource = new MatTableDataSource(result);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 }
