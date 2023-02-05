@@ -9,6 +9,9 @@ import {
   Validators,
 } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { JsonpInterceptor } from '@angular/common/http';
+
+JsonpInterceptor;
 
 @Component({
   selector: 'app-certificado',
@@ -98,18 +101,19 @@ export class CertificadoComponent implements OnInit {
       id: [''],
       nombres: ['', Validators.required],
       apellidos: ['', Validators.required],
-      tipoDocumento: ['cedula', Validators.required],
+      tipoDocumento: ['cedula'],
       documentoIdentidad: [''],
+      nacionalidad: ['', Validators.required],
       fechaNacimiento: ['', Validators.required],
       sexo: ['M', Validators.required],
       residencia: this.formBuilder.group({
-        direccion: ['', Validators.required],
+        direccion: [''],
         sector: ['', Validators.required],
-        provincia: ['', Validators.required],
-        codigoPostal: ['', Validators.required],
+        provincia: [''],
+        codigoPostal: [''],
       }),
       contactos: this.formBuilder.group({
-        telefono: ['', Validators.required],
+        telefono: [''],
         email: [''],
       }),
       images: this.formBuilder.group({
@@ -150,6 +154,10 @@ export class CertificadoComponent implements OnInit {
 
   get documentoIdentidad() {
     return this.certificadoFormGroup.get('cedula');
+  }
+
+  get nacionalidad() {
+    return this.certificadoFormGroup.get('nacionalid');
   }
 
   get fechaNacimiento() {

@@ -42,9 +42,9 @@
           <div class="row">
             <div class="col-4">
               <mat-form-field appearance="outline">
-                <mat-label>Cedula / Pasaporte</mat-label>
+                <mat-label>Cédula / Pasaporte</mat-label>
                 <mat-select formControlName="tipoDocumento">
-                  <mat-option value="cedula">Cedula</mat-option>
+                  <mat-option value="cedula">Cédula</mat-option>
                   <mat-option value="pasaporte">Pasaporte</mat-option>
                 </mat-select>
               </mat-form-field>
@@ -59,7 +59,7 @@
               ></div>
               <ng-template #cedula>
                 <mat-form-field appearance="outline">
-                  <mat-label>Cedula</mat-label>
+                  <mat-label>Cédula</mat-label>
                   <input
                     matInput
                     mask="000-0000000-0"
@@ -101,13 +101,28 @@
           </div>
 
           <mat-form-field appearance="outline">
+            <mat-label>Nacionalidad</mat-label>
+            <input matInput formControlName="nacionalidad" />
+            <mat-error *ngFor="let error of errorMessages">
+              <mat-error
+                *ngIf="
+                  nacionalidad?.hasError(error.type) &&
+                  (nacionalidad?.dirty || nacionalidad?.touched)
+                "
+                >{{ error.message }}</mat-error
+              >
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
             <mat-label>Fecha de Nacimineto</mat-label>
             <input
               matInput
               [matDatepicker]="picker1"
               formControlName="fechaNacimiento"
-              placeholder="DD/MM/AAAA"
+              placeholder="MM/DD/AAAA"
             />
+
             <mat-datepicker-toggle
               matIconSuffix
               [for]="picker1"
@@ -134,7 +149,7 @@
 
           <ng-container formGroupName="residencia">
             <mat-form-field appearance="outline">
-              <mat-label>Direccion</mat-label>
+              <mat-label>Dirección</mat-label>
               <input matInput formControlName="direccion" />
             </mat-form-field>
 
@@ -146,17 +161,14 @@
             <mat-form-field appearance="outline">
               <mat-label>Provincia</mat-label>
               <mat-select formControlName="provincia">
-                <mat-option
-                  *ngFor="let provincia of provincias"
-                  [value]="provincia.id"
-                >
-                  {{ provincia.provincia }} ( {{ provincia.ciudad }} )
+                <mat-option *ngFor="let item of provincias" [value]="item.id">
+                  {{ item.provincia }} ( {{ item.ciudad }} )
                 </mat-option>
               </mat-select>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
-              <mat-label>Codigo Postal</mat-label>
+              <mat-label>Código Postal</mat-label>
               <input formControlName="codigoPostal" type="number" matInput />
             </mat-form-field>
           </ng-container>
@@ -233,7 +245,7 @@
 
       <ng-container formGroupName="contactos">
         <mat-form-field appearance="outline">
-          <mat-label>Telefono</mat-label>
+          <mat-label>Teléfono</mat-label>
           <input matInput formControlName="telefono" />
         </mat-form-field>
         <mat-form-field appearance="outline">
@@ -276,7 +288,7 @@
           <mat-form-field appearance="outline">
             <mat-label>En Estado</mat-label>
             <select matNativeControl formControlName="estado">
-              <option *ngFor="let item of estado$ | async" [value]="item.id">
+              <option *ngFor="let item of estado$ | async" [value]="item.name">
                 {{ item.name }}
               </option>
             </select>
@@ -336,6 +348,6 @@
   </button>
 
   <button type="button" mat-raised-button color="success" (click)="create()">
-    Generar PDF
+    Guardar
   </button>
 </div>

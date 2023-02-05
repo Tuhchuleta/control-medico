@@ -26,6 +26,21 @@ export class PdfService {
       (result) => (this.logoInacifWatermarkUrl = result)
     );
   }
+  private edad(fechaOficio: Date, fechaNacimiento: Date): string {
+    const edad = fechaOficio.getFullYear() - fechaNacimiento.getFullYear();
+    const monthDiff = fechaOficio.getMonth() - fechaNacimiento.getMonth();
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && fechaOficio.getDate() < fechaNacimiento.getDate())
+    ) {
+      return this.mayorEdad(edad - 1);
+    }
+    return this.mayorEdad(edad);
+  }
+
+  private mayorEdad(edad: number): string {
+    return edad >= 18 ? 'mayor de edad' : 'menor de edad';
+  }
 
   private background() {
     const fn = (currentPage: any, pageSize: any) => {
@@ -46,6 +61,35 @@ export class PdfService {
 
     const certificadoPdf: any = {
       background: this.background(),
+
+      footer: [
+        {
+          margin: [40, -40, 0, 0],
+          alignment: 'left',
+          text: [
+            {
+              alignment: 'left',
+              fontSize: 10,
+              text: 'Calle Fabio Fiallo esq. Beller, Palacio de Justicia de Ciudad Nueva, \n Santo Domingo, Distrito Nacional \n Teléfono: 809-533-3522 \n www.fiscaliadeldistrito.gob.do',
+            },
+          ],
+        },
+        {
+          margin: [0, 20, 0, 0],
+          alignment: 'center',
+          canvas: [
+            {
+              type: 'line',
+              x1: 0,
+              y1: 0,
+              x2: 595,
+              y2: 0,
+              lineColor: '#2F5597',
+              lineWidth: 35,
+            },
+          ],
+        },
+      ],
       content: [
         {
           columns: [
@@ -53,7 +97,7 @@ export class PdfService {
               width: '15%',
               stack: [
                 {
-                  margin: [5, 0, 5, 0],
+                  margin: [0, 0, 5, 0],
                   width: 90,
                   height: 100,
                   image: this.logoMisterioPublicoUrl,
@@ -69,7 +113,7 @@ export class PdfService {
               bold: true,
             },
             {
-              margin: [5, 0, 5, 0],
+              margin: [5, 0, 0, 0],
               width: '20%',
               stack: [
                 {
@@ -84,7 +128,7 @@ export class PdfService {
         {
           margin: [5, 5, 10, 0],
           bold: true,
-          text: 'Certificado No.:',
+          text: `Certificado No.: ${form.id}`,
         },
         {
           margin: [0, 5, 0, 0],
@@ -95,20 +139,74 @@ export class PdfService {
                 {
                   margin: [10, 10],
                   alignment: 'justify',
-                  text: `Yo, ${
-                    user.nombre
-                  } juramentado como Médico Legista, con exequatur número: ${
-                    user.exequatur
-                  }, CERTIFICO que, actuando a requerimiento ${
-                    form.referido
-                  }, he practicado un exámen físico a ${form.nombres.toUpperCase()} ${form.apellidos.toUpperCase()}, cédula: ${this.formatDocument(
-                    form.documentoIdentidad
-                  )}, domiciliado en ${form.residencia.direccion} ${
-                    form.residencia.sector
-                  }, Edad 21 que actualmente se encuentra en estado ${
-                    form.estado
-                  }, Constatando mediante el interrogatorio, como por el exámen fisico que presenta:`,
-                  fontSize: 14,
+                  fontSize: 12,
+                  text: [
+                    {
+                      text: 'Yo',
+                    },
+                    {
+                      bold: true,
+                      text: `${user.nombre.toUpperCase()}`,
+                    },
+                    {
+                      text: 'juramentado como Médico Legista, con Exequátur No. ',
+                    },
+                    {
+                      bold: true,
+                      text: `${user.exequatur}`,
+                    },
+                    {
+                      bold: true,
+                      text: ' CERTIFICO ',
+                    },
+                    {
+                      text: 'que, actuando a requerimiento ',
+                    },
+                    {
+                      bold: true,
+                      text: `${form.referido}`,
+                    },
+                    {
+                      text: ' he practicado un examen físico ',
+                    },
+                    {
+                      text: `${form.sexo === 'M' ? 'al Sr. ' : 'a la Sra. '}`,
+                    },
+                    {
+                      text: `${form.nombres.toUpperCase()} ${form.apellidos.toUpperCase()}`,
+                    },
+                    {
+                      text: ` ${form.nacionalidad} ${this.edad(
+                        form.fechaOficio,
+                        form.fechaNacimiento
+                      )}`,
+                    },
+                    {
+                      text: ' portador (a) del documento de identidad No. ',
+                    },
+                    {
+                      bold: true,
+                      text: `${this.formatDocument(form.documentoIdentidad)}`,
+                    },
+                    {
+                      text: ' domiciliado y residente en la ',
+                    },
+                    {
+                      bold: true,
+                      text: `${form.residencia.direccion} ${form.residencia.sector} ${form.residencia.provincia}`,
+                    },
+                    {
+                      text: ' que actualmente se encuentra en estado ',
+                    },
+                    {
+                      bold: true,
+                      text: `${form.estado}`,
+                    },
+                    {
+                      bold: true,
+                      text: ' Constatando mediante el interrogatorio, como por el examen físico que presenta:',
+                    },
+                  ],
                 },
               ],
             ],
@@ -151,7 +249,8 @@ export class PdfService {
                       margin: [10, 10, 10, 0],
                       width: 376,
                       alignment: 'justify',
-                      text: `${form.examenFisico}`,
+                      fontSize: 12,
+                      text: `${form.examenFisico.toUpperCase()}`,
                     },
                   ],
                 },
@@ -176,14 +275,15 @@ export class PdfService {
                 {
                   margin: [10, 10],
                   alignment: 'justify',
+                  fontSize: 12,
                   text: [
                     {
                       decoration: 'underline',
                       bold: true,
-                      text: `Conclusion: ${form.conclusion}`,
+                      text: `Conclusiones: ${form.conclusion}\n`,
                     },
                     {
-                      text: '(Las conclusiones estan sujetas a cualquier tipo de complicacion que se presente dentro de la evolucion del periodo de curacion establecido).',
+                      text: '(Las conclusiones están sujetas a cualquier tipo de complicación que se presente dentro de la evolución del periodo de curación establecido).',
                     },
                   ],
                 },
@@ -202,9 +302,10 @@ export class PdfService {
         {
           margin: [5, 10, 10, 20],
           alignment: 'justify',
+          fontSize: 12,
           text: [
             {
-              text: 'EXPEDIDO en la cuidad de Santo Domingo de Guzman, Distrito Nacional, capital de la Republica Dominicana de fecha ',
+              text: 'EXPEDIDO en la cuidad de Santo Domingo de Guzmán, Distrito Nacional, capital de la República Dominicana de fecha ',
             },
             {
               bold: true,
@@ -216,15 +317,10 @@ export class PdfService {
           ],
         },
         {
-          margin: [0, 30, 0, 0],
+          margin: [0, 25, 0, 0],
           alignment: 'center',
-          text: '________________________________',
-        },
-        {
-          margin: [0, 5, 0, 0],
-          bold: true,
-          alignment: 'center',
-          text: 'Medico Legista Actuante',
+          fontSize: 12,
+          text: '________________________________ \n Médico Legista Actuante',
         },
       ],
       defaultStyle: {
