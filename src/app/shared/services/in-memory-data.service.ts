@@ -58,7 +58,7 @@ export class InMemoryDataService {
     ];
 
     const Referido = [
-      { id: 1, name: 'de la Procuraduría General de la República Dominicana ' },
+      { id: 1, name: 'de la Procuraduría General de la República Dominicana' },
       { id: 2, name: 'de la Comandancia de la FF. AA.' },
       { id: 3, name: 'de la Comandancia de la Fuerza Aérea Dominicana' },
       { id: 4, name: 'de la Comandancia de la Marina de Guerra' },
@@ -85,64 +85,67 @@ export class InMemoryDataService {
     const Conclusion = [
       {
         id: 1,
-        name: 'Estas Lesiones Curaran Dentro de un Periodo de 1 a 10 Días',
+        name: 'Estas Lesiones Curaran Dentro de un Periodo de 1 a 10 Días.',
       },
       {
         id: 2,
-        name: 'Estas Lesiones Curaran dentro de un periodo de 10 a 21 Días',
+        name: 'Estas Lesiones Curaran dentro de un periodo de 10 a 21 Días.',
       },
       {
         id: 3,
-        name: 'Estas lesiones curaran dentro de un periodo de 21 a 30 Días',
+        name: 'Estas lesiones curaran dentro de un periodo de 21 a 30 Días.',
       },
       {
         id: 4,
-        name: 'Estas Lesiones curaran dentro de un periodo de 1 a 2 Meses',
+        name: 'Estas Lesiones curaran dentro de un periodo de 1 a 2 Meses.',
       },
       {
         id: 5,
-        name: 'Estas Lesiones curaran dentro de un periodo de 2 a 3 Meses',
+        name: 'Estas Lesiones curaran dentro de un periodo de 2 a 3 Meses.',
       },
       {
         id: 6,
-        name: 'Estas Lesiones curaran dentro de un periodo de 3 a 4 Meses',
+        name: 'Estas Lesiones curaran dentro de un periodo de 3 a 4 Meses.',
       },
       {
         id: 7,
-        name: 'Estas Lesiones curaran dentro de un periodo de 4 a 5 Meses',
+        name: 'Estas Lesiones curaran dentro de un periodo de 4 a 5 Meses.',
       },
       {
         id: 8,
-        name: 'Estas Lesiones curaran dentro de un periodo de 5 a 6 Meses',
+        name: 'Estas Lesiones curaran dentro de un periodo de 5 a 6 Meses.',
       },
       {
         id: 9,
-        name: 'Estas Lesiones curaran dentro de un periodo de 6 a 7 Meses',
+        name: 'Estas Lesiones curaran dentro de un periodo de 6 a 7 Meses.',
       },
       {
         id: 10,
-        name: 'Estas Lesiones curaran dentro de un periodo de 7 a 8 Meses',
+        name: 'Estas Lesiones curaran dentro de un periodo de 7 a 8 Meses.',
       },
       {
         id: 11,
-        name: 'Estas Lesiones curaran dentro de un periodo de 8 a 12 Meses',
+        name: 'Estas Lesiones curaran dentro de un periodo de 8 a 12 Meses.',
       },
       {
         id: 12,
-        name: 'Estas Lesiones curaran dentro de un periodo de 12 a 18 Meses',
+        name: 'Estas Lesiones curaran dentro de un periodo de 12 a 18 Meses.',
       },
       {
         id: 13,
-        name: 'Estas Lesiones curaran dentro de un periodo de 18 a 24 Meses',
+        name: 'Estas Lesiones curaran dentro de un periodo de 18 a 24 Meses.',
       },
-      { id: 14, name: 'Excedió el límite de 2 a 3, activarlo el mes de nuevo' },
-      { id: 15, name: 'No se Aprecian Lesiones Físicas Actuales' },
-      { id: 16, name: 'En Observación Médica' },
-      { id: 17, name: 'Lesiones de Pronóstico Reservado' },
-      { id: 18, name: 'Pendiente de Evolución y Estudios Complementarios' },
-      { id: 19, name: 'El Tipo de Lesión ha producido un Daño Permanente' },
-      { id: 20, name: 'Homologamos Certificado Médico en Referencia' },
-      { id: 21, name: 'Lesión Permanente Desde el Punto De Vista Estético' },
+      {
+        id: 14,
+        name: 'Excedió el límite de 2 a 3, activarlo el mes de nuevo.',
+      },
+      { id: 15, name: 'No se Aprecian Lesiones Físicas Actuales.' },
+      { id: 16, name: 'En Observación Médica.' },
+      { id: 17, name: 'Lesiones de Pronóstico Reservado.' },
+      { id: 18, name: 'Pendiente de Evolución y Estudios Complementarios.' },
+      { id: 19, name: 'El Tipo de Lesión ha producido un Daño Permanente.' },
+      { id: 20, name: 'Homologamos Certificado Médico en Referencia.' },
+      { id: 21, name: 'Lesión Permanente Desde el Punto De Vista Estético.' },
     ];
 
     const List = [

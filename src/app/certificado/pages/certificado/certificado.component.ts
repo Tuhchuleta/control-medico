@@ -107,9 +107,10 @@ export class CertificadoComponent implements OnInit {
       fechaNacimiento: ['', Validators.required],
       sexo: ['M', Validators.required],
       residencia: this.formBuilder.group({
-        direccion: [''],
+        direccion: ['', Validators.required],
         sector: ['', Validators.required],
-        provincia: [''],
+        provincia: [this.provincias[0], Validators.required],
+        municipio: ['', Validators.required],
         codigoPostal: [''],
       }),
       contactos: this.formBuilder.group({
@@ -119,11 +120,11 @@ export class CertificadoComponent implements OnInit {
       images: this.formBuilder.group({
         agresion: this.formBuilder.group({
           path: [],
-          file: [''],
+          file: ['', Validators.required],
         }),
         perfil: this.formBuilder.group({
           path: [],
-          file: [''],
+          file: ['', Validators.required],
         }),
       }),
       aspectoLegal: ['', Validators.required],
@@ -166,6 +167,10 @@ export class CertificadoComponent implements OnInit {
 
   get residencia() {
     return this.certificadoFormGroup.get('residencia');
+  }
+
+  get provincia() {
+    return this.residencia.get('provincia');
   }
 
   get contactos() {

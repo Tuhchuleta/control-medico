@@ -8,12 +8,7 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Nombres</mat-label>
-            <input
-              matInput
-              cdkFocusInitial
-              formControlName="nombres"
-              placeholder="Ex. Joe Due"
-            />
+            <input matInput cdkFocusInitial formControlName="nombres" />
             <mat-error *ngFor="let error of errorMessages">
               <mat-error
                 *ngIf="
@@ -161,15 +156,34 @@
             <mat-form-field appearance="outline">
               <mat-label>Provincia</mat-label>
               <mat-select formControlName="provincia">
-                <mat-option *ngFor="let item of provincias" [value]="item.id">
-                  {{ item.provincia }} ( {{ item.ciudad }} )
+                <mat-option
+                  *ngFor="let provincia of provincias"
+                  [value]="provincia"
+                >
+                  {{ provincia.nombre }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
+              <mat-label>Municipio</mat-label>
+              <mat-select formControlName="municipio">
+                <mat-option
+                  *ngFor="let municipio of provincia.value.municipios"
+                  [value]="municipio"
+                  >{{ municipio }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
               <mat-label>Código Postal</mat-label>
-              <input formControlName="codigoPostal" type="number" matInput />
+              <input
+                formControlName="codigoPostal"
+                mask="00000"
+                type="number"
+                matInput
+              />
             </mat-form-field>
           </ng-container>
         </div>
@@ -246,7 +260,7 @@
       <ng-container formGroupName="contactos">
         <mat-form-field appearance="outline">
           <mat-label>Teléfono</mat-label>
-          <input matInput formControlName="telefono" />
+          <input matInput formControlName="telefono" mask="(000) 000-0000" />
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Email</mat-label>

@@ -26,35 +26,6 @@ export class PdfService {
       (result) => (this.logoInacifWatermarkUrl = result)
     );
   }
-  private edad(fechaOficio: Date, fechaNacimiento: Date): string {
-    const edad = fechaOficio.getFullYear() - fechaNacimiento.getFullYear();
-    const monthDiff = fechaOficio.getMonth() - fechaNacimiento.getMonth();
-    if (
-      monthDiff < 0 ||
-      (monthDiff === 0 && fechaOficio.getDate() < fechaNacimiento.getDate())
-    ) {
-      return this.mayorEdad(edad - 1);
-    }
-    return this.mayorEdad(edad);
-  }
-
-  private mayorEdad(edad: number): string {
-    return edad >= 18 ? 'mayor de edad' : 'menor de edad';
-  }
-
-  private background() {
-    const fn = (currentPage: any, pageSize: any) => {
-      return {
-        image: this.logoInacifWatermarkUrl,
-        opacity: 0.3,
-        width: 502,
-        height: 380,
-        alignment: 'center',
-        absolutePosition: { y: 180 },
-      };
-    };
-    return fn;
-  }
 
   createPdf(form: any): void {
     const user: any = JSON.parse(localStorage.getItem('user'));
@@ -153,7 +124,7 @@ export class PdfService {
                     },
                     {
                       bold: true,
-                      text: `${user.exequatur}`,
+                      text: `${user.exequatur},`,
                     },
                     {
                       bold: true,
@@ -164,7 +135,7 @@ export class PdfService {
                     },
                     {
                       bold: true,
-                      text: `${form.referido}`,
+                      text: `${form.referido},`,
                     },
                     {
                       text: ' he practicado un examen físico ',
@@ -173,34 +144,34 @@ export class PdfService {
                       text: `${form.sexo === 'M' ? 'al Sr. ' : 'a la Sra. '}`,
                     },
                     {
-                      text: `${form.nombres.toUpperCase()} ${form.apellidos.toUpperCase()}`,
+                      text: `${form.nombres.toUpperCase()} ${form.apellidos.toUpperCase()},`,
                     },
                     {
-                      text: ` ${form.nacionalidad} ${this.edad(
-                        form.fechaOficio,
-                        form.fechaNacimiento
-                      )}`,
+                      text: ` ${form.nacionalidad}, ${this.edad(
+                        form?.fechaOficio,
+                        form?.fechaNacimiento
+                      )},`,
                     },
                     {
                       text: ' portador (a) del documento de identidad No. ',
                     },
                     {
                       bold: true,
-                      text: `${this.formatDocument(form.documentoIdentidad)}`,
+                      text: `${this.formatDocument(form.documentoIdentidad)},`,
                     },
                     {
                       text: ' domiciliado y residente en la ',
                     },
                     {
                       bold: true,
-                      text: `${form.residencia.direccion} ${form.residencia.sector} ${form.residencia.provincia}`,
+                      text: `${form.residencia.direccion}, ${form.residencia.sector}, ${form?.residencia?.provincia?.nombre} ( ${form?.residencia?.municipio} ) `,
                     },
                     {
                       text: ' que actualmente se encuentra en estado ',
                     },
                     {
                       bold: true,
-                      text: `${form.estado}`,
+                      text: `${form.estado}.\n`,
                     },
                     {
                       bold: true,
@@ -337,7 +308,41 @@ export class PdfService {
       },
     };
 
-    pdfMake.createPdf(certificadoPdf, null, fonts).open();
+    pdfMake.createPdf(certificadoPdf, null, fonts).print();
+  }
+
+  private edad(fechaOficio: Date, fechaNacimiento: Date): string {
+    if (!fechaOficio || !fechaNacimiento) {
+      return '';
+    }
+
+    const edad = fechaOficio.getFullYear() - fechaNacimiento.getFullYear();
+    const monthDiff = fechaOficio.getMonth() - fechaNacimiento.getMonth();
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && fechaOficio.getDate() < fechaNacimiento.getDate())
+    ) {
+      return this.mayorEdad(edad - 1);
+    }
+    return this.mayorEdad(edad);
+  }
+
+  private mayorEdad(edad: number): string {
+    return edad >= 18 ? 'mayor de edad' : 'menor de edad';
+  }
+
+  private background() {
+    const fn = (currentPage: any, pageSize: any) => {
+      return {
+        image: this.logoInacifWatermarkUrl,
+        opacity: 0.3,
+        width: 502,
+        height: 380,
+        alignment: 'center',
+        absolutePosition: { y: 180 },
+      };
+    };
+    return fn;
   }
 
   private formatDocument(document: string): string {
